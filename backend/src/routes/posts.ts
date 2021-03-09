@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import Comment from '../entities/Comments'
+import Comment from '../entities/Comment'
 import Post from '../entities/Post'
 import Sub from '../entities/Sub'
 import auth from '../middleware/auth'
@@ -30,6 +30,7 @@ const createPost = async (req: Request, res: Response) => {
     try {
         const posts = await Post.find({
             order: {createdAt: 'DESC'},
+            relations: ['comments', 'votes', 'sub'],
         })
 
         return res.json(posts)
