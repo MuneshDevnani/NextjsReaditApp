@@ -3,8 +3,10 @@ import Axios from "axios";
 import { Fragment } from 'react';
 import { useRouter } from "next/router";
 
+import { AuthProvider } from "../context/auth";
+
 import '../styles/tailwind.css'
-import  '../styles/icons.css'
+import '../styles/icons.css'
 
 import Navbar from "../components/Navbar";
 
@@ -13,12 +15,12 @@ Axios.defaults.withCredentials = true
 
 function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
-  const authRoutes =['/register' , '/login']
+  const authRoutes = ['/register', '/login']
   const authRoute = authRoutes.includes(pathname)
-  return <Fragment>
-     {!authRoute && <Navbar />}
+  return <AuthProvider>
+    {!authRoute && <Navbar />}
     <Component {...pageProps} />
-  </Fragment>
+  </AuthProvider>
 
 }
 
