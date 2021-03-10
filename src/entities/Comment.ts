@@ -22,7 +22,6 @@ export default class Comment extends Entity{
     @Column()
     username: string
 
-
     @ManyToOne(() => User)
     @JoinColumn({ name: 'username', referencedColumnName:'username'})
      user: User
