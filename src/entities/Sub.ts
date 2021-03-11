@@ -1,3 +1,4 @@
+import { Expose } from "class-transformer";
 import {Entity as ToEntity, Column, Index, ManyToOne, JoinColumn, BeforeInsert, OneToMany} from "typeorm";
 import { makeId, slugify } from "../utils/helpers";
 import Entity from './Entity'
@@ -25,8 +26,11 @@ export default class Sub extends Entity{
     imageUrn: string
 
     @Column({ nullable: true})
-    banner: string
+    bannerUrn: string
     
+    @Column()
+    username: string
+
     @ManyToOne(() => User)
     @JoinColumn({ name: 'username', referencedColumnName:'username'})
      user: User;
@@ -34,4 +38,15 @@ export default class Sub extends Entity{
     @OneToMany(() => Post, post => post.sub)
     posts: Post[]
 
+    @Expose()
+    get imageUrl(): string {
+        return this.imageUrn ? `${process.env.APP_URL}/images/${this.imageUrn}`
+        : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+    }
+
+    @Expose()
+    get bannerUrl(): string {
+        return this.bannerUrn ? `${process.env.APP_URL}/images/${this.bannerUrn}`
+        : undefined
+    }
 }

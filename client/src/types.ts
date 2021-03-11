@@ -20,3 +20,18 @@ export interface User{
     createdAt:string
     updatedAt:string
 }
+
+export interface Sub {
+    createdAt: String
+    updatedAt: String
+    name: string
+    title: String
+    description: String
+    imageUrn: String
+    bannerUrn: String
+    username: String
+    posts: Post[]
+    //virtuals
+    imageUrl: String
+    bannerUrl: String
+}
