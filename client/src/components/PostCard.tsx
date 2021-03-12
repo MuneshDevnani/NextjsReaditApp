@@ -18,9 +18,23 @@ interface PostCardProps {
 }
 
 
-export default function PostCard({ post: {identifier, slug, commentCount, createdAt, voteScore, username, url, title, body, subName, userVote} }: PostCardProps) {
+export default function PostCard({ 
+  post: {
+    identifier, 
+    slug, 
+    commentCount, 
+    createdAt, 
+    voteScore, 
+    username, 
+    url, 
+    title,
+    body, 
+    subName, 
+    userVote
+  } 
+}: PostCardProps) {
 
-  const vote = async (value) => {
+  const vote = async (value: number) => {
     try {
       const res = await Axios.post('/misc/vote', {
         identifier,
@@ -36,12 +50,15 @@ export default function PostCard({ post: {identifier, slug, commentCount, create
   }
     return (
         <div key={identifier} className="flex mb-4 bg-white rounded">
+          {/* vote section */}
               <div className="w-10 py-3 text-center bg-gray-200 rounded-1">
+                {/* upvote */}
                 <div className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500" onClick={() => vote(1)}>
                     <i className={classNames('icon-arrow-up',{
                       'text-red-500' : userVote === 1,
                     })}></i>
                 </div>
+                {/* downvote */}
                 <p className="text-xs font-bold">{voteScore}</p>
                 <div className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-600" onClick={() => vote(-1)}>
                 <i className={classNames('icon-arrow-down',{
@@ -49,6 +66,8 @@ export default function PostCard({ post: {identifier, slug, commentCount, create
                     })}></i>
                 </div>
               </div>
+
+              {/* post data section */}
               <div className="w-full p-2">
                 <div className="flex items-center">
                   <Link href={`/r/${subName}`}>
@@ -62,7 +81,7 @@ export default function PostCard({ post: {identifier, slug, commentCount, create
                     /r/${subName}
                     </a> 
                   </Link>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-500">
                     <span className="mx-1">.</span>
                      Posted by
                     <Link href={`/u/${username}`} >

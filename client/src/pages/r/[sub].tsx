@@ -8,6 +8,8 @@ import { Sub } from "../../types";
 import { useAuthState } from "../../context/auth";
 import classNames from "classnames";
 import Axios from "axios";
+import Sidebar from "../../components/Sidebar";
+import Link from "next/link";
 
 export default function subPage() {
     //local state
@@ -123,6 +125,7 @@ export default function subPage() {
                         <div className="w-160">
                             {postsMarkup}
                         </div>
+                        <Sidebar sub={sub} />
                         </div>
                     </Fragment>
                 )}

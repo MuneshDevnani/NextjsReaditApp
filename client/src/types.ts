@@ -7,6 +7,7 @@ export interface Post {
     updayedAt: string
     body?: string
     username: string
+    sub?: Sub
     //virtual fields
     url: string
     voteScore?: number
@@ -22,16 +23,17 @@ export interface User{
 }
 
 export interface Sub {
-    createdAt: String
-    updatedAt: String
+    createdAt: string
+    updatedAt: string
     name: string
-    title: String
-    description: String
-    imageUrn: String
-    bannerUrn: String
-    username: String
+    title: string
+    description: string
+    imageUrn: string
+    bannerUrn: string
+    username: string
     posts: Post[]
     //virtuals
-    imageUrl: String
-    bannerUrl: String
+    imageUrl: string
+    bannerUrl: string
+    postCount?: number
 }
