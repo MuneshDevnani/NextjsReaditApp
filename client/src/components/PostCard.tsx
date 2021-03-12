@@ -1,18 +1,14 @@
 import Link from 'next/link'
-import React, { Fragment } from 'react'
+import React from 'react'
+import Axios from 'axios';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import classNames from 'classnames'
+import ActionButton from "./ActionButton";
 
 import { Post } from "../types";
-import Axios from 'axios';
 dayjs.extend(relativeTime)
 
-const ActionButton = ({ children }) =>{
-    return <div className="px-1 py-1 mr-2 text-gray-400 rounded cursor-pointer hover:bg-gray-200">
-        {children}
-    </div>
-}
 interface PostCardProps {
     post: Post
 }
