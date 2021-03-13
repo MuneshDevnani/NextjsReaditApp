@@ -7,10 +7,13 @@ import classNames from 'classnames'
 import ActionButton from "./ActionButton";
 
 import { Post } from "../types";
+import { useAuthState } from '../context/auth';
+import { useRouter } from 'next/router';
 dayjs.extend(relativeTime)
 
 interface PostCardProps {
     post: Post
+    revalidate?: Function
 }
 
 
@@ -26,17 +29,29 @@ export default function PostCard({
     title,
     body, 
     subName, 
-    userVote
-  } 
+    userVote,
+    sub
+  },
+  revalidate
 }: PostCardProps) {
 
+  const { authenticated } = useAuthState()
+  const router = useRouter()
+
+  const isInSubPage = router.pathname === '/r/[sub]' 
+
   const vote = async (value: number) => {
+    if(!authenticated) router.push('/login')
+    if(value === userVote) value =0
     try {
       const res = await Axios.post('/misc/vote', {
         identifier,
         slug,
         value
       })
+      if(revalidate){
+        revalidate()
+      }
       console.log(res.data);
       
     } catch (err) {
@@ -45,7 +60,7 @@ export default function PostCard({
     }
   }
     return (
-        <div key={identifier} className="flex mb-4 bg-white rounded">
+        <div key={identifier} className="flex mb-4 bg-white rounded" id={identifier}>
           {/* vote section */}
               <div className="w-10 py-3 text-center bg-gray-200 rounded-1">
                 {/* upvote */}
@@ -66,19 +81,25 @@ export default function PostCard({
               {/* post data section */}
               <div className="w-full p-2">
                 <div className="flex items-center">
+                  {!isInSubPage && (
+                    <>
                   <Link href={`/r/${subName}`}>
+                    <a>
                     <img 
-                    src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                    src={sub.imageUrl}
                     className="w-6 h-6 mr-1 rounded-full cursor-pointer"
                     />   
+                    </a>
                   </Link>
                   <Link href={`/r/${subName}`}>
                   <a className="text-xs font-bold cursor-pointer hover:underline">
                     /r/${subName}
                     </a> 
                   </Link>
+                  <span className="mx-1 text-gray-500">.</span>
+                    </>
+                  )}
                   <p className="text-xs text-gray-500">
-                    <span className="mx-1">.</span>
                      Posted by
                     <Link href={`/u/${username}`} >
                       <a className="mx-1 hover:underline">
