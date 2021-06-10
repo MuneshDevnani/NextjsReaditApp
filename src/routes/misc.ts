@@ -5,7 +5,7 @@ import Post from '../entities/Post'
 import User from '../entities/User'
 import Vote from '../entities/Vote'
 import Sub from '../entities/Sub'
-
+import nodemailer from 'nodemailer'
 import auth from '../middleware/auth'
 import user from '../middleware/user'
 
@@ -85,8 +85,39 @@ const topSubs = async (_: Request, res: Response) => {
  }
 }
 
+const sendemail = async (req: Request, res: Response) => {
+  var smtpTransport = nodemailer.createTransport({
+		service: "Gmail",
+		auth: {
+			user: "zeeshan.zenveus@gmail.com",
+		  pass: "zenVeus@3620"
+		},
+		tls: {
+		  rejectUnauthorized: false
+		}
+		});
+		var mailOptions = {
+		from: "zeeshan.zenveus@gmail.com",
+		to: "zeeshan.sikander@live.com",
+		subject: `${req.body.name}`,
+		html:`<h3>${req.body.name} having email address ${req.body.email} send you message <br /> via contact form</h3>
+    <h4>${req.body.message} <h4>
+    <h4>${req.body.contact?req.body.contact:''} <h4>`
+		};
+		let EmailRes = await smtpTransport
+    .sendMail(mailOptions)
+    .then(resp => 
+       res.json({status: true,message:"success" })
+    )
+    .catch(error=>
+       res.status(500).json({error: "Something went wrong"})
+    )  
+}
+
+
 const router = Router()
 router.post('/vote',user, auth, vote)
 router.get('/top-subs', topSubs)
+router.post('/sendemail', sendemail)
 
 export default router
