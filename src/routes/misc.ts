@@ -106,12 +106,15 @@ const sendemail = async (req: Request, res: Response) => {
 		};
 		let EmailRes = await smtpTransport
     .sendMail(mailOptions)
-    .then(resp => 
+    .then(resp => {
+        console.log(JSON.stringify(resp))
        res.json({status: true,message:"success" })
-    )
-    .catch(error=>
-       res.status(500).json({error: "Something went wrong"})
-    )  
+    })
+    .catch(error=>{
+      console.log('E',JSON.stringify(error)) 
+      res.status(500).json({error: "Something went wrong"})
+    
+       } )  
 }
 
 
