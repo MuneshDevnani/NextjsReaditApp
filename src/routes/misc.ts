@@ -86,6 +86,7 @@ const topSubs = async (_: Request, res: Response) => {
 }
 
 const sendemail = async (req: Request, res: Response) => {
+  try{
   var smtpTransport = nodemailer.createTransport({
 		service: "Gmail",
 		auth: {
@@ -115,6 +116,11 @@ const sendemail = async (req: Request, res: Response) => {
       res.status(500).json({error: "Something went wrong"})
     
        } )  
+      }catch(err){
+        console.log("Cat",err);
+      res.status(500).json({error: "Something went wrong"})
+
+      }
 }
 
 
